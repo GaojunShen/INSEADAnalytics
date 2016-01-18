@@ -131,7 +131,6 @@ source(&quot;dataSet1.R&quot;)</code></pre>
 <li><p>It is done in lines 11-18 of dataSet1.R8</p></li>
 <li><p>The cumulative returns of Apple during this period is 380.7%; The average daily returns of Apple during this period is 0.137%; The standard deviation of the daily returns of Apple during this period is 2.189%;</p></li>
 <li><p>The cumulative returns of Yahoo during this period is 59%; The average daily returns of Yahoo during this period is 0.021%; The standard deviation of the daily returns of Yahoo during this period is 2.513%;</p></li>
-<li><p>The cumulative returns of Yahoo during this period is 88.8%; The average daily returns of Yahoo during this period is 0.032%; The standard deviation of the daily returns of Yahoo during this period is 1.259%;</p></li>
 </ol>
 </div>
 </div>
@@ -157,10 +156,9 @@ tail(StockReturns,5) </code></pre>
 </ol>
 <p><strong>Your Answers here:</strong></p>
 <ol style="list-style-type: decimal">
-<li>To get the number of rows of the new matrix, use nrow(transposedData). To get the number of columns of the new matrix, use ncol(transposedData).</li>
+<li><p>To get the number of rows of the new matrix, use nrow(transposedData). To get the number of columns of the new matrix, use ncol(transposedData).</p></li>
+<li><p><code>{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE} portfolio = apply(StockReturns,1,mean) names(portfolio) &lt;- rownames(StockReturns) pnl_plot(portfolio)</code></p></li>
 </ol>
-<hr>
-<hr>
 </div>
 </div>
 <div id="part-iii-reproducibility-and-customization" class="section level3">
@@ -174,12 +172,9 @@ tail(StockReturns,5) </code></pre>
 </ol>
 <p><strong>Your Answers here:</strong></p>
 <ol style="list-style-type: decimal">
-<li><ol style="list-style-type: decimal">
-<li>In dataSet1.R line 9, change the code into startDate = “2001-01-01”. Then re-run the lines 11-18 to download new data and work with the data since 2001-01-01.</li>
-</ol></li>
+<li><p>In dataSet1.R line 9, change the code into startDate = “2001-01-01”. Then re-run the lines 11-18 to download new data and work with the data since 2001-01-01.</p></li>
+<li><p><code>{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE} portfolio = apply(StockReturns,1,mean) names(portfolio) &lt;- rownames(StockReturns) pnl_plot(portfolio)</code></p></li>
 </ol>
-<hr>
-<hr>
 </div>
 </div>
 <div id="part-iv-readwrite-.csv-files" class="section level3">
@@ -196,9 +191,11 @@ tail(StockReturns,5) </code></pre>
 <li><em>(Extra exercise)</em> What do you think will happen if you now run this command, and why:</li>
 </ol>
 <pre class="r"><code>myData + StockReturns[1:40,])</code></pre>
-<p><strong>Your Answers here:</strong> <br> <br> <br> <br></p>
-<hr>
-<hr>
+<p><strong>Your Answers here:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>The sum is 20. ‘myData != StockReturns[1:20,]’ compares if the value in ‘myData’ differs from ‘StockReturn[1:20,]’. If they are different, the logic value is 1. If they are the same, the logic value is 0. The command ’sum(myData != StockReturns[1;20,]) adds up the comparaison values of all 20 days and shows they are different in 20 days.</p></li>
+<li><p>There would be an error message if I run the command ‘myData + StockReturns[1:40,]’. Because class(myData) is data.frame and class(StockReturns) is matrix. They are not the same format and cannot be added up.</p></li>
+</ol>
 </div>
 </div>
 <div id="extra-question" class="section level3">

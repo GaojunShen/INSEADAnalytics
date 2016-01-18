@@ -133,9 +133,12 @@ We can also transpose the matrix of returns to create a new "horizontal" matrix.
 
 1.	To get the number of rows of the new matrix, use nrow(transposedData). To get the number of columns of the new matrix, use ncol(transposedData).
 
-2. portfolio = apply(StockReturns,1,mean)
+2. ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+portfolio = apply(StockReturns,1,mean)
 names(portfolio) <- rownames(StockReturns)
 pnl_plot(portfolio)
+```
+
 
 ### Part III: Reproducibility and Customization
 
@@ -150,9 +153,11 @@ This is an important step and will get you to think about the overall process on
 
 1. In dataSet1.R line 9, change the code into startDate = "2001-01-01". Then re-run the lines 11-18 to download new data and work with the data since 2001-01-01.
 
-2. portfolio = apply(StockReturns,1,mean)
+2. ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+portfolio = apply(StockReturns,1,mean)
 names(portfolio) <- rownames(StockReturns)
 pnl_plot(portfolio)
+```
 
 ###  Part IV: Read/Write .CSV files
 
