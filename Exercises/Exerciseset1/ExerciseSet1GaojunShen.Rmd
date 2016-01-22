@@ -92,10 +92,19 @@ pnl_plot(SPY)
 The average daily returns of Apple during this period is `r round(100*mean(StockReturns[,2]),3)`%;
 The standard deviation of the daily returns of Apple during this period is `r round(100*sd(StockReturns[,2]),3)`%;
 
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig.height=4,fig.width= 6, fig=TRUE}
+AAPL = StockReturns[,"AAPL"]
+pnl_plot(AAPL)
+```
+
 3. The cumulative returns of Yahoo during this period is `r round(100*sum(StockReturns[,3]),1)`%;
 The average daily returns of Yahoo during this period is `r round(100*mean(StockReturns[,3]),3)`%;
 The standard deviation of the daily returns of Yahoo during this period is `r round(100*sd(StockReturns[,3]),3)`%;
 
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig.height=4,fig.width= 6, fig=TRUE}
+YHOO = StockReturns[,"YHOO"]
+pnl_plot(YHOO)
+```
 
 ### Part II: Simple Matrix Manipulations
 
@@ -124,6 +133,7 @@ pnl_plot(portfolio)
 
 We can also transpose the matrix of returns to create a new "horizontal" matrix. Let's call this matrix (variable name) transposedData. We can do so using this command:  `transposedData = t(StockReturns)`. 
 
+
 #### Questions
 
 1. What R commands can you use to get the number of rows and number of columns of the new matrix called transposedData?
@@ -134,9 +144,9 @@ We can also transpose the matrix of returns to create a new "horizontal" matrix.
 1.	To get the number of rows of the new matrix, use nrow(transposedData). To get the number of columns of the new matrix, use ncol(transposedData).
 
 2. ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
-portfolio = apply(StockReturns,1,mean)
-names(portfolio) <- rownames(StockReturns)
-pnl_plot(portfolio)
+portfolio2=apply(transposedData,2,mean)
+names(portfolio2) <- colnames(transposedData)
+pnl_plot(portfolio2)
 ```
 
 
@@ -188,7 +198,7 @@ myData + StockReturns[1:40,])
 
 1. The sum is 20. 'myData != StockReturns[1:20,]' compares if the value in 'myData' differs from 'StockReturn[1:20,]'. If they are different, the logic value is 1. If they are the same, the logic value is 0. The command 'sum(myData != StockReturns[1;20,]) adds up the comparaison values of all 20 days and shows they are different in 20 days.
 
-2.	There would be an error message if I run the command 'myData + StockReturns[1:40,]'. Because class(myData) is data.frame and class(StockReturns) is matrix. They are not the same format and cannot be added up.
+2.	There would be an error message if I run the command 'myData + StockReturns[1:40,]'. Because class(myData) is data.frame and class(StockReturns) is matrix. They are not the same format and cannot be added up directly.
 
 ### Extra Question
 
