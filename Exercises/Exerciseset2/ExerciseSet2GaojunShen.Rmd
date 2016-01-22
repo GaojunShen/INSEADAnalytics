@@ -163,13 +163,14 @@ print(m1,'chart')
 <br>
 
 **Your Answers here:**
+
 1. We need 6 principal components to explain at least 50% of the variance in this data.
 
 2. 5 yr T-Notes US (0.93), 10 yr T-Notes (0.93), Treasury Bonds (0.86), 2 yr T-Note US (0.85), Canadian Bond (0.79), Eurodollar (0.74).
 
 3. We can interpret the first 10 components. Their Eigenvalues are more than 1 and have a cumulative percentage of expalined variance 62.61%. They are principal components.
 
-4.a. Before crisis
+4.a. **Before crisis**
 ```r pre_crisis_data  = futures_data[as.Date(rownames(futures_data)) > "2002-11-01" & as.Date(rownames(futures_data)) < "2007-10-01",]
 ```
 
@@ -202,7 +203,7 @@ print(Pre_Crisis_Line, 'chart')
 ```
 
 
-4.b. During crisis
+4.b. **During crisis**
 ```r crisis_data  = futures_data[as.Date(rownames(futures_data)) > "2007-10-01" & as.Date(rownames(futures_data)) < "2009-03-01",]
 ```
 
@@ -233,6 +234,7 @@ colnames(Crisis_df) <- c("eigenvalues", "components", "abline")
 Crisis_Line         <- gvisLineChart(as.data.frame(Crisis_df), xvar="components", yvar=c("eigenvalues","abline"), options=list(title='Scree plot', legend="right", width=900, height=600, hAxis="{title:'Number of Components', titleTextStyle:{color:'black'}}", vAxes="[{title:'Eigenvalues'}]",  series="[{color:'green',pointSize:3, targetAxisIndex: 0}]"))
 print(Crisis_Line, 'chart')
 ```
+
 
 5. During bull year, there are 15 components with Eigenvalue > 1 and explain 69.95% variance. The component 1 alone explains 17.49%.
 During bear year, there are 13 components with Eigenvalue > 1 and explain 75.44% variance. The component 1 alone explains 29.78%.
