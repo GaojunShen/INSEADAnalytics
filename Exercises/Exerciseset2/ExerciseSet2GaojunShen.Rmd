@@ -173,24 +173,24 @@ print(m1,'chart')
 4.a. **Before crisis**
 ```r pre_crisis_data  = futures_data[as.Date(rownames(futures_data)) > "2002-11-01" & as.Date(rownames(futures_data)) < "2007-10-01",]
 ```
-
+  
 ```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
 Pre_Crisis_Variance_Explained_Table_results<-PCA(pre_crisis_data, graph=FALSE)
 Pre_Crisis_Variance_Explained_Table<-cbind(paste("component",1:ncol(pre_crisis_data),sep=" "),Pre_Crisis_Variance_Explained_Table_results$eig)
 Pre_Crisis_Variance_Explained_Table<-as.data.frame(Pre_Crisis_Variance_Explained_Table)
 colnames(Pre_Crisis_Variance_Explained_Table)<-c("Component","Eigenvalue", "Percentage_of_explained_variance", "Cumulative_percentage_of_explained_variance")
 ```
-
+  
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE, results='asis'}
 Pre_Crisis_show_data = data.frame(Pre_Crisis_Variance_Explained_Table)
 Pre_Crisis_m1<-gvisTable(Pre_Crisis_show_data,options=list(width=1920, height=min(400,27*(nrow(Pre_Crisis_show_data)+1)),allowHTML=TRUE,page='disable'),formats=list(Eigenvalue="#.##",Percentage_of_explained_variance="#.##",Cumulative_percentage_of_explained_variance="#.##"))
 print(Pre_Crisis_m1,'chart')
 ```
 <br> 
-
+    
 Here is the scree plot:
 <br>
-
+    
 ```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
 Pre_Crisis_eigenvalues  <- Pre_Crisis_Variance_Explained_Table[,2]
 ```
@@ -202,32 +202,52 @@ Pre_Crisis_Line         <- gvisLineChart(as.data.frame(Pre_Crisis_df), xvar="com
 print(Pre_Crisis_Line, 'chart')
 ```
 
+```{r echo=TRUE, comment=NA, warning=FALSE, error=FALSE,message=FALSE,results='asis',tidy=TRUE}
+Pre_Crisis_corused = cor(pre_crisis_data[,apply(pre_crisis_data!=0,2,sum) > 10, drop=F])
+Pre_Crisis_Rotated_Results<-principal(Pre_Crisis_corused, nfactors=20, rotate="varimax",score=TRUE)
+Pre_Crisis_Rotated_Factors<-round(Pre_Crisis_Rotated_Results$loadings,2)
+Pre_Crisis_Rotated_Factors<-as.data.frame(unclass(Pre_Crisis_Rotated_Factors))
+colnames(Pre_Crisis_Rotated_Factors)<-paste("Component",1:ncol(Pre_Crisis_Rotated_Factors),sep=" ")
+
+Pre_Crisis_sorted_rows <- sort(Pre_Crisis_Rotated_Factors[,1], decreasing = TRUE, index.return = TRUE)$ix
+Pre_Crisis_Rotated_Factors <- Pre_Crisis_Rotated_Factors[Pre_Crisis_sorted_rows,]
+Pre_Crisis_Rotated_Factors[abs(Pre_Crisis_Rotated_Factors) < 0.3]<-NA
+```
+
+```{r echo=FALSE, comment=NA, warning=FALSE, error=FALSE,message=FALSE,results='asis'}
+Pre_Crisis_show_data <- Pre_Crisis_Rotated_Factors 
+Pre_Crisis_show_data<-cbind(rownames(Pre_Crisis_show_data),Pre_Crisis_show_data)
+colnames(Pre_Crisis_show_data)<-c("Variables",colnames(Pre_Crisis_Rotated_Factors))
+Pre_Crisis_m1<-gvisTable(Pre_Crisis_show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(Pre_Crisis_show_data)+1)),allowHTML=TRUE,page='disable'))
+print(Pre_Crisis_m1,'chart')
+```
+<br>
 
 4.b. **During crisis**
 ```r crisis_data  = futures_data[as.Date(rownames(futures_data)) > "2007-10-01" & as.Date(rownames(futures_data)) < "2009-03-01",]
 ```
-
+  
 ```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
 Crisis_Variance_Explained_Table_results<-PCA(crisis_data, graph=FALSE)
 Crisis_Variance_Explained_Table<-cbind(paste("component",1:ncol(crisis_data),sep=" "),Crisis_Variance_Explained_Table_results$eig)
 Crisis_Variance_Explained_Table<-as.data.frame(Crisis_Variance_Explained_Table)
 colnames(Crisis_Variance_Explained_Table)<-c("Component","Eigenvalue", "Percentage_of_explained_variance", "Cumulative_percentage_of_explained_variance")
 ```
-
+  
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE, results='asis'}
 Crisis_show_data = data.frame(Crisis_Variance_Explained_Table)
 Crisis_m1<-gvisTable(Crisis_show_data,options=list(width=1920, height=min(400,27*(nrow(Crisis_show_data)+1)),allowHTML=TRUE,page='disable'),formats=list(Eigenvalue="#.##",Percentage_of_explained_variance="#.##",Cumulative_percentage_of_explained_variance="#.##"))
 print(Crisis_m1,'chart')
 ```
 <br> 
-
+    
 Here is the scree plot:
 <br>
-
+    
 ```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
 Crisis_eigenvalues  <- Crisis_Variance_Explained_Table[,2]
 ```
-
+  
 ```{r Fig3, echo=FALSE, comment=NA, results='asis', message=FALSE, fig.align='center', fig=TRUE}
 Crisis_df           <- cbind(as.data.frame(Crisis_eigenvalues), c(1:length(Crisis_eigenvalues)), rep(1, length(Crisis_eigenvalues)))
 colnames(Crisis_df) <- c("eigenvalues", "components", "abline")
@@ -235,11 +255,31 @@ Crisis_Line         <- gvisLineChart(as.data.frame(Crisis_df), xvar="components"
 print(Crisis_Line, 'chart')
 ```
 
+```{r echo=TRUE, comment=NA, warning=FALSE, error=FALSE,message=FALSE,results='asis',tidy=TRUE}
+Crisis_corused = cor(crisis_data[,apply(crisis_data!=0,2,sum) > 10, drop=F])
+Crisis_Rotated_Results<-principal(Crisis_corused, nfactors=20, rotate="varimax",score=TRUE)
+Crisis_Rotated_Factors<-round(Crisis_Rotated_Results$loadings,2)
+Crisis_Rotated_Factors<-as.data.frame(unclass(Crisis_Rotated_Factors))
+colnames(Crisis_Rotated_Factors)<-paste("Component",1:ncol(Crisis_Rotated_Factors),sep=" ")
+
+Crisis_sorted_rows <- sort(Crisis_Rotated_Factors[,1], decreasing = TRUE, index.return = TRUE)$ix
+Crisis_Rotated_Factors <- Crisis_Rotated_Factors[Crisis_sorted_rows,]
+Crisis_Rotated_Factors[abs(Crisis_Rotated_Factors) < 0.3]<-NA
+```
+
+```{r echo=FALSE, comment=NA, warning=FALSE, error=FALSE,message=FALSE,results='asis'}
+Crisis_show_data <- Crisis_Rotated_Factors 
+Crisis_show_data<-cbind(rownames(Crisis_show_data),Crisis_show_data)
+colnames(Crisis_show_data)<-c("Variables",colnames(Crisis_Rotated_Factors))
+Crisis_m1<-gvisTable(Crisis_show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(Crisis_show_data)+1)),allowHTML=TRUE,page='disable'))
+print(Crisis_m1,'chart')
+``` 
+<br>
 
 5. During bull year, there are 15 components with Eigenvalue > 1 and explain 69.95% variance. The component 1 alone explains 17.49%.
 During bear year, there are 13 components with Eigenvalue > 1 and explain 75.44% variance. The component 1 alone explains 29.78%.
 This implies the more components with Eigenvalue > 1, the better the financial market is and each component explains less variance which means they are stable.
-During bull year, assets are more correlated and during bear year, assets tend to be less correlated.
+During bear, commodity such as Soybean, Soybean oil, corn and wheat became more important (No.2 component) than others.
 
 
 ### A Simple Futures Trend Following Strategy
@@ -296,9 +336,7 @@ Here is how this strategy has performed during this period.
 <br>
 
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE, results='asis'}
-show_data = data.frame(cbind(rownames(pnl_matrix(trading_strategy)), round(pnl_matrix(trading_strategy),2)))
-m1<-gvisTable(show_data,options=list(width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE))
-print(m1,'chart')
+
 ```
 
 <br>
@@ -318,11 +356,32 @@ How does this compare with **existing CTA products** such as [this one from Soci
 <br>
 
 **Your Answers here:**
-<br>
-<br>
-<br>
-<br>
 
+1. The code defines a zero variable 'signal_used' firtly then use moving average and ad their sign(+ or -) into this variable to vote long or short. Then it uses the function to scale the data and make sure we invest $1 every day. After, it creates the returns of the strategy for each futures time series and predicts future strategy by using the signal from 2 days ago and transforms into trading strategy.
+
+2. The following code defines a shorter term (250 -> 200) and a smaller interval (20 -> 10).The result is similar.
+
+
+```{r echo=TRUE, eval=TRUE, comment=NA, warning=FALSE,error=FALSE, message=FALSE, prompt=FALSE, tidy=TRUE}
+signal_used = 0*futures_data # just initialize the trading signal to be 0
+# Take many moving Average (MA) Signals and let them "vote" with their sign (+-1, e.g. long or short vote, for each signal)
+MAfreq<-seq(10,200,by=10)
+for (iter in 1:length(MAfreq))
+  signal_used = signal_used + sign(apply(futures_data,2, function(r) ma(r,MAfreq[iter])))
+# Now make sure we invest $1 every day (so the sum of the absolute values of the weights is 1 every day)
+signal_used = t(apply(signal_used,1,function(r) {
+  res = r  
+  if ( sum(abs(r)) !=0 )
+    res = r/sum(abs(r))
+  res
+}))
+colnames(signal_used) <- colnames(futures_data)
+# Now create the returns of the strategy for each futures time series
+strategy_by_future <- scrub(shift(signal_used,2)*futures_data) # use the signal from 2 days ago
+# finally, this is our futures trend following strategy
+trading_strategy = apply(strategy_by_future,1,sum)
+names(trading_strategy) <- rownames(futures_data)
+```
 
 <hr>
 
